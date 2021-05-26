@@ -335,7 +335,6 @@
         let _this = this
         _this.$router.push({path: '/index'})
       },
-
       //跳转游资大佬页
       toHotmoney() {
         let _this = this
