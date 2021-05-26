@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-// import store from '../store/store';
+import store from '../store/store';
 
 
 import moment from 'moment';
@@ -20,6 +20,8 @@ Vue.component(Input.name, Input);
 
 Vue.use(datePicker)
 
+import url from '../static/js/serviceAPI.config.js'
+Vue.prototype.url=url;
 
 import Utils from '../static/js/common.js';
 Vue.prototype.utils=Utils;
@@ -30,11 +32,13 @@ Vue.prototype.jq=Jq;
 import fixTab from '../static/js/fixedTable.js';
 Vue.prototype.ft=fixTab;
 
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

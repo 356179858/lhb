@@ -2,8 +2,8 @@
   <div class="rank-main">
     <!-- Tab菜单 -->
     <ul class="rank-tab bt-line">
-      <li><span class="stock-rank">龙虎榜单</span><a href="http://m.123.com.cn/lhb/stock_rank_unscramble"></a></li>
-      <li class="active"><span class="stock-hotmoney">游资大佬</span></li>
+      <li @click="toIndex"><span class="stock-rank">龙虎榜单</span><a href="http://m.123.com.cn/lhb/stock_rank_unscramble"></a></li>
+      <li class="active" @click="toHotmoney"><span class="stock-hotmoney">游资大佬</span></li>
     </ul>
     <!--龙虎榜单start -->
     <div class="rank-tab-item">
@@ -41,7 +41,7 @@
             </li>
           </ul>
         </div>
-        <a class="detail-btn" @click="toDetail(value.yz_id,value.yz_name)"
+        <a class="detail-btn" @click="toDetail(value.yz_id)"
           javascript="void(0)"><span>查看详情</span></a>
       </li>
     </ul>
@@ -58,7 +58,6 @@
 </template>
 
 <script>
-  import url from '../serviceAPI.config.js'
   import moment from 'moment';
   export default {
     data() {
@@ -113,8 +112,13 @@
         lhbDate: {
           indexPage: "1",
           indexPageSize: "15",
-          indexLoad: false,
-          hotmoneyList: []
+          indexLoad: true,
+          hotmoneyList: [],
+          hotmoneyDate: {
+            sname:"",
+            scode:"",
+            id:""
+          }
         }
       }
     },
@@ -175,19 +179,9 @@
             this.noPre = false
             break
         }
-        // this.getHqData(this.dateString)
-        // this.lhbDate.rank_table = 0
-        // this.lhbDate.indexPage = "1"
-        // this.lhbDate.all_rankList = []
-        // this.lhbDate.rank_stockNum = true
-        // this.lhbDate.zf_sort = true
-        // this.lhbDate.jmr_sort = false
-        // this.lhbDate.zf_down = true
-        // this.lhbDate.jmr_down = false
-        // this.lhbDate.sname = "chgradio"
-        // this.lhbDate.sort = "desc"
-        // this.lhbDate.indexLoad = true
-        // this.getMrData(this.dateString)
+        this.lhbDate.hotmoneyList = []
+        this.lhbDate.indexLoad = true
+        this.getHmData(this.dateString)
       },
       disabledDate(current) {
         return !this.disableDays.includes(current.valueOf())
@@ -229,19 +223,9 @@
               this.noPre = false
               break
           }
-          // this.getHqData(this.dateString)
-          // this.lhbDate.rank_table = 0
-          // this.lhbDate.indexPage = "1"
-          // this.lhbDate.all_rankList = []
-          // this.lhbDate.rank_stockNum = true
-          // this.lhbDate.zf_sort = true
-          // this.lhbDate.jmr_sort = false
-          // this.lhbDate.zf_down = true
-          // this.lhbDate.jmr_down = false
-          // this.lhbDate.sname = "chgradio"
-          // this.lhbDate.sort = "desc"
-          // this.lhbDate.indexLoad = true
-          // this.getMrData(this.dateString)
+          this.lhbDate.hotmoneyList = []
+          this.lhbDate.indexLoad = true
+          this.getHmData(this.dateString)
         } else {
           this.utils.toast('没有更多数据了');
           this.noPre = true
@@ -270,19 +254,9 @@
               this.noPre = false
               break
           }
-          // this.getHqData(this.dateString)
-          // this.lhbDate.rank_table = 0
-          // this.lhbDate.indexPage = "1"
-          // this.lhbDate.all_rankList = []
-          // this.lhbDate.rank_stockNum = true
-          // this.lhbDate.zf_sort = true
-          // this.lhbDate.jmr_sort = false
-          // this.lhbDate.zf_down = true
-          // this.lhbDate.jmr_down = false
-          // this.lhbDate.sname = "chgradio"
-          // this.lhbDate.sort = "desc"
-          // this.lhbDate.indexLoad = true
-          // this.getMrData(this.dateString)
+          this.lhbDate.hotmoneyList = []
+          this.lhbDate.indexLoad = true
+          this.getHmData(this.dateString)
         } else {
           this.utils.toast('当前是最新数据');
           this.noNext = true
@@ -302,7 +276,7 @@
       },
       getDate() { // axios
         let _this = this
-        let dateUrl = url.get_lhb_days
+        let dateUrl = this.url.get_lhb_days
         axios.get(dateUrl, {
             params: {
               'type': 2,
@@ -317,6 +291,7 @@
           })
           .then(response => {
             let date = _this.selDateTimes
+            _this.lhbDate.indexLoad = true
             this.getHmData(date)
           })
           .catch(err => {
@@ -325,7 +300,7 @@
       },
       getHmData(date) {
         let _this = this
-        let hmURL = url.hotmoney_list
+        let hmURL = this.url.hotmoney_list
         axios.get(hmURL, {
           params: {
             date
@@ -348,16 +323,27 @@
               }
             })
             _this.lhbDate.hotmoneyList = result
+            _this.lhbDate.indexLoad = false
           }
         })
       },
-      toDetail(id,name){
-        console.log(id,name);
+      toDetail(id){
+        this.$store.commit('saveHotmoney', id);
+      },
+      //跳转首页
+      toIndex() {
+        let _this = this
+        _this.$router.push({path: '/index'})
+      },
+
+      //跳转游资大佬页
+      toHotmoney() {
+        let _this = this
+        _this.$router.push({path: '/hotmoney'})
       }
     },
     created() {
       this.getDate()
-      // this.jq.indexFix();
     },
     mounted() {
 

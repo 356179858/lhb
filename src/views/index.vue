@@ -2,9 +2,8 @@
   <div class="rank-main">
     <!-- Tab菜单 -->
     <ul class="rank-tab bt-line">
-      <li class="active"><span class="stock-rank">龙虎榜单</span><a
-          href="http://m.123.com.cn/lhb/stock_rank_unscramble"></a></li>
-      <li><span class="stock-hotmoney">游资大佬</span></li>
+      <li class="active" @click="toIndex"><span class="stock-rank">龙虎榜单</span><a href="http://m.123.com.cn/lhb/stock_rank_unscramble"></a></li>
+      <li @click="toHotmoney"><span class="stock-hotmoney">游资大佬</span></li>
     </ul>
     <!--龙虎榜单start -->
     <div class="rank-tab-item">
@@ -168,7 +167,6 @@
 </template>
 
 <script>
-  import url from '../serviceAPI.config.js'
   import moment from 'moment';
   export default {
     data() {
@@ -442,7 +440,7 @@
       },
       getDate() { // axios
         let _this = this
-        let dateUrl = url.get_lhb_days
+        let dateUrl = this.url.get_lhb_days
         axios.get(dateUrl).then(response => { //先请求的a接口
             let res = response.data.data;
             _this.weekday = res
@@ -462,7 +460,7 @@
       },
       getHqData(date) {
         let _this = this
-        let hqURL = url.market_hq_url
+        let hqURL = this.url.market_hq_url
         axios.get(hqURL, {
           params: {
             date: date
@@ -505,7 +503,7 @@
       },
       getMrData(date) {
         let _this = this
-        let mrURL = url.market_ranklist
+        let mrURL = this.url.market_ranklist
         let index = _this.lhbDate.rank_table
         axios.get(mrURL, {
           params: {
@@ -631,6 +629,17 @@
           }, 300);
         }, 300);
       },
+      //跳转首页
+      toIndex() {
+        let _this = this
+        _this.$router.push({path: '/index'})
+      },
+
+      //跳转游资大佬页
+      toHotmoney() {
+        let _this = this
+        _this.$router.push({path: '/hotmoney'})
+      }
     },
     created() {
       this.getDate()
