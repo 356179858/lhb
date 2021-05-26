@@ -327,6 +327,7 @@
           }
         })
       },
+      //修改vuex
       toDetail(id){
         this.$store.commit('saveHotmoney', id);
       },
