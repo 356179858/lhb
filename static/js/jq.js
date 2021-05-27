@@ -33,6 +33,7 @@ export default {
         $('.hotmoney-tab').removeClass('on');
       };
     });
-  }
+  },
+  
 
 }

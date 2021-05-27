@@ -25,9 +25,10 @@
     </div>
     <!-- 卡片列表 -->
     <ul id="hotmony-indexCard" class="hotmoney-card-list">
-      <li class="hotmoney-card" v-for="(value,index) in lhbDate.hotmoneyList" :key="value.id">
+      <li class="hotmoney-card" :class="lhbDate.listIndex == index ? 'active' : '' " v-for="(value,index) in lhbDate.hotmoneyList" :key="value.id" @click="readMore(index)">
         <div class="card-block">
           <p class="card-title">{{value.yz_name}}</p>
+          <p class="card-title-tips" v-show="lhbDate.listIndex == index">{{value.yz_summary||"暂无简介"}}</p>
           <ul class="card-stock bt-line">
             <li v-for="(svalue,sindex) in JSON.parse(value.yz_scode_info)" :key="svalue.id">
               <div class="stock-name">
@@ -54,6 +55,7 @@
       <img v-show="lhbDate.indexLoad" src="../../static/images/icon/loading.gif" />
       <span v-show="!lhbDate.indexLoad">已经是全部数据了</span>
     </div>
+    <router-view/>
   </div>
 </template>
 
@@ -118,7 +120,8 @@
             sname:"",
             scode:"",
             id:""
-          }
+          },
+          listIndex:"-1"
         }
       }
     },
@@ -345,6 +348,13 @@
       toUnscramble() {
         let _this = this
         _this.$router.push({path: '/unscramble'})
+      },
+      readMore(index) {
+         if(this.lhbDate.listIndex == index) {
+           this.lhbDate.listIndex = "-1"
+         } else {
+           this.lhbDate.listIndex = index
+         }
       }
     },
     created() {
