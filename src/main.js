@@ -10,7 +10,7 @@ moment.locale('zh-cn'); //设置语言 或 moment.lang('zh-cn');
 Vue.prototype.$moment = moment;//挂载到当前vue实例对象
 
 
-import 'ant-design-vue/dist/antd.css';
+import '../static/css/antd.css';
 import Button from 'ant-design-vue/lib/button';
 import datePicker from 'ant-design-vue/lib/date-picker';
 import Input from 'ant-design-vue/lib/input';

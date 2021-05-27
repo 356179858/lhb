@@ -2,8 +2,8 @@
   <div class="rank-main">
     <!-- Tab菜单 -->
     <ul class="rank-tab bt-line">
-      <li @click="toIndex"><span class="stock-rank">龙虎榜单</span><a href="http://m.123.com.cn/lhb/stock_rank_unscramble"></a></li>
-      <li class="active" @click="toHotmoney"><span class="stock-hotmoney">游资大佬</span></li>
+      <li @click.stop="toIndex"><span class="stock-rank">龙虎榜单</span><b @click.stop="toUnscramble"></b></li>
+      <li class="active" @click.stop="toHotmoney"><span class="stock-hotmoney">游资大佬</span></li>
     </ul>
     <!--龙虎榜单start -->
     <div class="rank-tab-item">
@@ -340,6 +340,11 @@
       toHotmoney() {
         let _this = this
         _this.$router.push({path: '/hotmoney'})
+      },
+      //跳转龙虎榜解读
+      toUnscramble() {
+        let _this = this
+        _this.$router.push({path: '/unscramble'})
       }
     },
     created() {

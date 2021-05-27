@@ -11,7 +11,7 @@ export default new Vuex.Store({
   state: {
     sname: "",
     scode: "",
-    sId: ""
+    sId: "39"
   },
 
 
