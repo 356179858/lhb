@@ -2,7 +2,8 @@
   <div class="rank-main">
     <!-- Tab菜单 -->
     <ul class="rank-tab bt-line">
-      <li class="active" @click.stop="toIndex"><span class="stock-rank">龙虎榜单</span><b @click.stop="toUnscramble"></b></li>
+      <li class="active" @click.stop="toIndex"><span class="stock-rank">龙虎榜单</span><b @click.stop="toUnscramble"></b>
+      </li>
       <li @click.stop="toHotmoney"><span class="stock-hotmoney">游资大佬</span></li>
     </ul>
     <!--龙虎榜单start -->
@@ -13,7 +14,7 @@
         <span href="javascript:void(0);" @click="getDatePre" class="pre-day" :class="{'no_pre':noPre}">上一日</span>
         <div class="select_date">
           <p @click="openModal">
-            <a-date-picker @change="onChange"  v-model="selDateTimes" :locale="zhCN" :disabled-date="disabledDate" />
+            <a-date-picker @change="onChange" v-model="selDateTimes" :locale="zhCN" :disabled-date="disabledDate" />
           </p>
           <span>{{ getWeek }}</span>
         </div>
@@ -153,11 +154,11 @@
             </div>
           </div>
         </div>
-        <div class="content-null">
-          <img src="images/icon/content-null.png" />
+        <div class="content-null" v-if="noDate">
+          <img src="../../static/images/content-null.png" />
           <p>目前暂无数据~</p>
         </div>
-        <div class="more_load">
+        <div class="more_load" v-if="!noDate">
           <img v-show="lhbDate.indexLoad" src="../../static/images/icon/loading.gif" />
           <span v-show="!lhbDate.indexLoad">已经是全部数据了</span>
         </div>
@@ -218,6 +219,7 @@
         dateFormat: 'YYYY/MM/DD',
         noPre: false,
         noNext: true,
+        noDate: false,
         lhbDate: {
           indexPage: "1",
           indexPageSize: "15",
@@ -515,8 +517,9 @@
             'sort': this.lhbDate.sort,
           }
         }).then(response => {
-          if (response.data.data.length !== 0) {
+          if (response.data.count !== 0) {
             let res = response.data.data
+            _this.noDate = false
             _this.lhbDate.stockNum = response.data.count
             _this.lhbDate.jmr_value = this.utils.numberFormat(res.jmmoney).value
             _this.lhbDate.jmr_unit = this.utils.numberFormat(res.jmmoney).unit
@@ -534,10 +537,11 @@
               }
             })
             _this.lhbDate.all_rankList = result
-            // console.log(_this.lhbDate.all_rankList);
             let thisLi = $("#rankList .list-info");
             thisLi.removeClass("active");
             thisLi.children(".hide-info").stop(true, false).slideUp();
+          } else {
+            _this.noDate = true
           }
         })
       },
@@ -616,14 +620,13 @@
         this.lhbDate.indexLoad = true
         this.lhbDate.sname = "chgradio"
         this.lhbDate.sort = "desc"
-        console.log(this.lhbDate.sort);
         this.getMrData(this.dateString)
         this.lhbDate.all_rankList = this.lhbDate.all_rankList.sort(this.utils.compareDown("chgradio"))
         let timeHeight = $(".time-picker").height();
         let thisLi = $("#rankList .list-info");
         thisLi.removeClass("active");
         thisLi.children(".hide-info").stop(true, false).slideUp();
-        setTimeout(function () {
+        setTimeout(function() {
           $('body,html').animate({
             scrollTop: $("#stockInfo").offset().top + timeHeight * 2
           }, 300);
@@ -632,30 +635,31 @@
       //跳转首页
       toIndex() {
         let _this = this
-        _this.$router.push({path: '/index'})
+        _this.noDate = false
+        _this.$router.push({
+          path: '/index'
+        })
       },
 
       //跳转游资大佬页
       toHotmoney() {
         let _this = this
-        _this.$router.push({path: '/hotmoney'})
+        _this.noDate = false
+        _this.$router.push({
+          path: '/hotmoney'
+        })
       },
 
       //跳转龙虎榜解读
       toUnscramble() {
         let _this = this
-        _this.$router.push({path: '/unscramble'})
-      }
-
-    },
-    created() {
-      this.getDate()
-      this.jq.indexFix();
-    },
-    mounted() {
-      this.ft.fixTable();
-      let _this = this;
-      window.onscroll = function() {
+        _this.noDate = false
+        _this.$router.push({
+          path: '/unscramble'
+        })
+      },
+      handleFun(){
+        let _this = this;
         //变量scrollTop是滚动条滚动时，距离顶部的距离
         var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         //变量windowHeight是可视区的高度
@@ -673,8 +677,31 @@
             _this.lhbDate.indexLoad = false
           }
         }
+        // 固定上榜股票头部
+        var timeHeight = $(".time-picker").height();
+        var toTop = $(window).scrollTop();
+        var rankHead = $(".rank-stock").height();
+        var allList = $("#allList").offset().top - toTop;
+        var listNoFixed = rankHead + $(".left_div1").height() + timeHeight;
+        if (allList < listNoFixed) {
+          $("#left_div1").addClass("active");
+          $("#right_div1").addClass("active");
+        } else {
+          $("#left_div1").removeClass("active");
+          $("#right_div1").removeClass("active");
+        };
       }
-    }
+    },
+    created() {
+      this.getDate()
+    },
+    mounted() {
+      this.ft.fixTable();
+      window.addEventListener("scroll",this.handleFun)
+    },
+    beforeDestroy(){
+      window.removeEventListener("scroll",this.handleFun)
+    },
   }
 </script>
 

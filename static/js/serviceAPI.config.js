@@ -4,6 +4,8 @@ const URL = {
     market_hq_url : BASEURL + 'stock/market_hq',
     market_ranklist : BASEURL + 'stock/lhb_detail',
     hotmoney_list : BASEURL + 'stock/get_hot_money_list',
+    hotmoney_detail : BASEURL + 'stock/get_hot_money_detail',
+    hotmoney_detail_page : BASEURL + 'stock/get_hot_money_detail_page',
 }
 
 module.exports = URL

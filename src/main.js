@@ -26,9 +26,6 @@ Vue.prototype.url=url;
 import Utils from '../static/js/common.js';
 Vue.prototype.utils=Utils;
 
-import Jq from '../static/js/jq.js';
-Vue.prototype.jq=Jq;
-
 import fixTab from '../static/js/fixedTable.js';
 Vue.prototype.ft=fixTab;
 

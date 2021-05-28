@@ -47,15 +47,14 @@
       </li>
     </ul>
 
-    <div class="content-null">
-      <img src="images/icon/content-null.png" />
+    <div class="content-null" v-if="noDate">
+      <img src="../../static/images/content-null.png" />
       <p>目前暂无数据~</p>
     </div>
-    <div class="more_load">
+    <div class="more_load" v-if="!noDate">
       <img v-show="lhbDate.indexLoad" src="../../static/images/icon/loading.gif" />
       <span v-show="!lhbDate.indexLoad">已经是全部数据了</span>
     </div>
-    <router-view/>
   </div>
 </template>
 
@@ -111,6 +110,7 @@
         dateFormat: 'YYYY/MM/DD',
         noPre: false,
         noNext: true,
+        noDate: false,
         lhbDate: {
           indexPage: "1",
           indexPageSize: "15",
@@ -332,21 +332,26 @@
       },
       //修改vuex
       toDetail(id){
-        this.$store.commit('saveHotmoney', id);
+        let _this = this
+        _this.$store.commit('saveHotmoney', id);
+        _this.$router.push({path: '/hotmoney_detail'})
       },
       //跳转首页
       toIndex() {
         let _this = this
+        _this.noDate = false
         _this.$router.push({path: '/index'})
       },
       //跳转游资大佬页
       toHotmoney() {
         let _this = this
+        _this.noDate = false
         _this.$router.push({path: '/hotmoney'})
       },
       //跳转龙虎榜解读
       toUnscramble() {
         let _this = this
+        _this.noDate = false
         _this.$router.push({path: '/unscramble'})
       },
       readMore(index) {
