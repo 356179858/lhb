@@ -31,5 +31,5 @@ export default new Router({
       path: '/unscramble',
       component: unscramble
     },
-  ]
+  ],
 })
