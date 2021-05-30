@@ -9,8 +9,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   // 1. state
   state: {
-    sname: "",
-    scode: "",
+    sname: "顺控发展",
+    scode: "003039",
     sId: ""
   },
 
