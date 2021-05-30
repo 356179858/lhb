@@ -50,7 +50,7 @@ export default {
 
   //股票手数转换
   numberForStock(svalue) {
-    value = svalue / 100
+    var  value = svalue / 100
     var param = {};
     var k = 10000,
       sizes = ['手', '万手', '亿手', '万亿手'],

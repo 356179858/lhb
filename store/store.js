@@ -7,10 +7,9 @@ Vue.use(Vuex);
 
 
 export default new Vuex.Store({
-  // 1. state
   state: {
-    sname: "顺控发展",
-    scode: "003039",
+    sname: "",
+    scode: "",
     sId: ""
   },
 
@@ -20,6 +19,10 @@ export default new Vuex.Store({
     saveHotmoney(state, path) {
       state.sId = path;
     },
-
+    // 保存游资大佬详情点击详情数据
+    saveStock(state, path) {
+      state.sname = path.sname;
+      state.scode = path.scode;
+    },
   }
 });

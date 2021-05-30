@@ -106,7 +106,7 @@
             </div>
             <div id="left_div2">
               <table id="left_table2" class="table table-bordered">
-                <tr class="lf_tr" v-for="(value,index) in lhbDate.all_rankList" :key="index">
+                <tr class="lf_tr" v-for="(value,index) in lhbDate.all_rankList" :key="index" @click="toDetail(value.sname,value.scode)">
                   <th>
                     <div class="stock-name">
                       <p>{{value.sname}}</p>
@@ -141,7 +141,7 @@
             </div>
             <div id="right_div2">
               <table id="right_table2" class="table table-bordered">
-                <tr class="rt_tr" v-for="(value,index) in lhbDate.all_rankList" :key="index">
+                <tr class="rt_tr" v-for="(value,index) in lhbDate.all_rankList" :key="index" @click="toDetail(value.sname,value.scode)">
                   <td :class="[{add: value.chgradio > 0},{min: value.chgradio < 0}]"><span
                       v-if="value.chgradio > 0">+</span>{{value.chgradio.toFixed(2)}}</span>%</td>
                   <td :class="[{add: value.jmmoney > 0},{min: value.jmmoney < 0}]"><span
@@ -636,6 +636,7 @@
       toIndex() {
         let _this = this
         _this.noDate = false
+        _this.lhbDate.indexLoad = true
         _this.$router.push({
           path: '/index'
         })
@@ -645,6 +646,7 @@
       toHotmoney() {
         let _this = this
         _this.noDate = false
+        _this.lhbDate.indexLoad = true
         _this.$router.push({
           path: '/hotmoney'
         })
@@ -654,8 +656,21 @@
       toUnscramble() {
         let _this = this
         _this.noDate = false
+        _this.lhbDate.indexLoad = true
         _this.$router.push({
           path: '/unscramble'
+        })
+      },
+      toDetail(sname,scode) {
+        let _this = this
+        _this.lhbDate.indexLoad = true
+        let path = {
+          sname,
+          scode
+        }
+        _this.$store.commit('saveStock', path);
+        _this.$router.push({
+          path: '/stock_detail'
         })
       },
       handleFun(){
@@ -673,7 +688,7 @@
           if (length < _this.lhbDate.stockNum) {
             _this.lhbDate.indexPage = page + 1
             _this.getMrData(_this.selDateTimes)
-          } else if (length = _this.lhbDate.stockNum) {
+          } else if (length == _this.lhbDate.stockNum) {
             _this.lhbDate.indexLoad = false
           }
         }

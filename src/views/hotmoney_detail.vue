@@ -68,7 +68,7 @@
                   </ul>
                 </div>
               </div>
-              <a class="detail-btn" javascript="void(0)" @click.stop="checkDetail"><span>查看详情</span></a>
+              <a class="detail-btn" javascript="void(0)" @click.stop="checkDetail(svalue.sname,svalue.scode)"><span>查看详情</span></a>
             </li>
           </ul>
         </li>
@@ -128,8 +128,8 @@
       },
       getdetail() {
         let _this = this
-        let hdpURL = this.url.hotmoney_detail_page
-        let id = this.$store.state.sId
+        let hdpURL = _this.url.hotmoney_detail_page
+        let id = _this.$store.state.sId
         axios.get(hdpURL, {
           params: {
             id,
@@ -192,8 +192,17 @@
         this.card_index = "-1"
         this.isShow = false
       },
-      checkDetail() {
-
+      checkDetail(sname,scode) {
+        let _this = this
+        _this.indexLoad = true
+        let path = {
+          sname,
+          scode
+        }
+        _this.$store.commit('saveStock', path);
+        _this.$router.push({
+          path: '/stock_detail'
+        })
       },
       handleFun() {
         let _this = this;
@@ -210,7 +219,7 @@
           if (length < _this.count) {
             _this.page = page + 1
             _this.getdetail()
-          } else if (length = _this.count) {
+          } else if (length == _this.count) {
             _this.indexLoad = false
           }
         }

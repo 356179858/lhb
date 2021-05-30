@@ -283,6 +283,10 @@
 	z-index: 100;
 }
 
+#marketInfo,#stockInfo {
+	padding: 0 4%;
+}
+
 .rank-column {
 	width: 100%;
 	background-color: #fff;
@@ -1030,7 +1034,6 @@
 	width: 100%;
 	font-size: .32rem;
 	font-weight: normal;
-	padding-bottom: 1.74rem;
 }
 
 .rank-detail-list .basic-info {

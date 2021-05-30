@@ -333,6 +333,7 @@
       //修改vuex
       toDetail(id){
         let _this = this
+        _this.indexLoad = true
         _this.$store.commit('saveHotmoney', id);
         _this.$router.push({path: '/hotmoney_detail'})
       },
@@ -340,18 +341,21 @@
       toIndex() {
         let _this = this
         _this.noDate = false
+        _this.indexLoad = true
         _this.$router.push({path: '/index'})
       },
       //跳转游资大佬页
       toHotmoney() {
         let _this = this
         _this.noDate = false
+        _this.indexLoad = true
         _this.$router.push({path: '/hotmoney'})
       },
       //跳转龙虎榜解读
       toUnscramble() {
         let _this = this
         _this.noDate = false
+        _this.indexLoad = true
         _this.$router.push({path: '/unscramble'})
       },
       readMore(index) {

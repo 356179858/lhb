@@ -14,7 +14,7 @@ export default new Router({
   mode: 'history',
   routes: [{
       path: '/',
-      redirect: '/stock_detail'
+      redirect: '/index'
     },
     {
       path: '/index',
