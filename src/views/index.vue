@@ -6,56 +6,58 @@
         <div class="rank-search">
           <div class="search-input">
             <span class="icon-search"></span>
-            <input id="search" class="h5-search" type="text" placeholder="输入股票名称/代码" @input="onSearch"  @click="searchOpen" v-model="searchItem">
+            <input id="search" class="h5-search" type="text" :placeholder="Placeholder" @input="onSearch"
+              @click="searchOpen" v-model="searchItem">
           </div>
           <span class="icon-close" v-if="!searchItem == ''" @click="closeX"></span>
         </div>
-        <a class="search-cancel h5-search-cancel"  @click="searchClose">取消</a>
+        <a class="search-cancel h5-search-cancel" @click="searchClose">取消</a>
       </div>
     </div>
     <!-- 搜索弹窗 -->
     <div class="search-mask" v-show="search">
-    	<!-- 搜索框占位 -->
-    	<div class="search-block"></div>
-    	<!-- 默认搜索显示 -->
-    	<!-- 搜索类型 -->
-    	<div class="search-type bt-line">
+      <!-- 搜索框占位 -->
+      <div class="search-block"></div>
+      <!-- 默认搜索显示 -->
+      <!-- 搜索类型 -->
+      <div class="search-type bt-line">
         <p class="search_menu" v-for="(value,index) in searchTab" :key="index"
           :class="search_table == index ? 'active' : '' " @click="searchTable(index)">{{value}}</span>
         </p>
-    	</div>
-    	<div class="defalut-search">
-    		<!-- 历史搜索 -->
-    		<div class="rank-column no-boder">
-    			<div></div>
-    			<p class="hot-title" v-show="JSON.stringify(this.historyList)!=='[]'&&searchItem == ''">历史搜索</p>
-    			<ul class="hot-list clearfix" v-show="JSON.stringify(this.historyList)!=='[]'&&searchItem == ''">
-            <li class="border" v-for="(value,index) in this.historyList" :key="index"><a>{{value.split('/')[0]}}</a></li>
+      </div>
+      <div class="defalut-search">
+        <!-- 历史搜索 -->
+        <div class="rank-column no-boder">
+          <div></div>
+          <p class="hot-title" v-show="JSON.stringify(this.historyList)!=='[]'&&searchItem == ''">历史搜索</p>
+          <ul class="hot-list clearfix" v-show="JSON.stringify(this.historyList)!=='[]'&&searchItem == ''">
+            <li class="border" v-for="(value,index) in this.historyList" :key="index" @click="toHistoryDetail(value)"><a>{{value.split('/')[0]}}</a>
+            </li>
           </ul>
-    			<div class="content-null" v-show="JSON.stringify(this.historyList)=='[]'&&searchItem ==''">
-    				<img src="../../static/images/content-null.png" />
-    				<p>暂无搜索记录~</p>
-    			</div>
-    		</div>
-    		<!-- 清空历史搜索 -->
-    		<div class="bottom-btn border" v-show="JSON.stringify(this.historyList)!=='[]'&&searchItem == ''">
-    			<a class="clear-btn" javascript="void(0)" @click="clearHistory">清空历史搜索</a>
-    		</div>
-    	</div>
-    	<!-- 搜索列表 -->
-    	<div class="mask-serach-list">
-    		<ul id="search_list" class="search-list" v-show="JSON.stringify(this.searchList) !=='[]'&&!searchNull">
+          <div class="content-null" v-show="JSON.stringify(this.historyList)=='[]'&&searchItem ==''">
+            <img src="../../static/images/content-null.png" />
+            <p>暂无搜索记录~</p>
+          </div>
+        </div>
+        <!-- 清空历史搜索 -->
+        <div class="bottom-btn border" v-show="JSON.stringify(this.historyList)!=='[]'&&searchItem == ''">
+          <a class="clear-btn" javascript="void(0)" @click="clearHistory">清空历史搜索</a>
+        </div>
+      </div>
+      <!-- 搜索列表 -->
+      <div class="mask-serach-list">
+        <ul id="search_list" class="search-list" v-show="JSON.stringify(this.searchList) !=='[]'&&!searchNull">
           <li class="bt-line" v-for="(value,index) in searchList" :key="value.index" @click="searchDetail(value)">
             <p v-show="search_table == 0">{{value.sname}}</p>
             <span v-show="search_table == 0">{{value.scode}}</span>
             <p v-show="search_table == 1">{{value.yz_name}}</p>
           </li>
         </ul>
-    		<div class="content-null" v-show="searchNull">
-    			<img src="../../static/images/content-null.png" />
-    			<p>暂时没有找到您想搜索的内容~</p>
-    		</div>
-    	</div>
+        <div class="content-null" v-show="searchNull">
+          <img src="../../static/images/content-null.png" />
+          <p>暂时没有找到您想搜索的内容~</p>
+        </div>
+      </div>
     </div>
     <!-- 主体 -->
     <div class="rank-main">
@@ -284,7 +286,7 @@
         noNext: true,
         noDate: false,
         search: false,
-        searchNull:false,
+        searchNull: false,
         searchItem: "",
         searchList: [],
         historyList: [],
@@ -347,7 +349,12 @@
         var dateArray = this.dateString.split("-");
         var date = new Date(dateArray[0], parseInt(dateArray[1] - 1), dateArray[2]);
         return "周" + "日一二三四五六".charAt(date.getDay());
-      }
+      },
+      Placeholder() {
+        return this.search_table == 0 ?
+          "输入股票名称/代码" :
+          "输入游资大佬名称"
+      },
     },
     methods: {
       closeModal() {
@@ -747,26 +754,44 @@
           path: '/stock_detail'
         })
       },
+      //跳转游资大佬详情
+      toHmDetail(id) {
+        let _this = this
+        _this.indexLoad = true
+        _this.$store.commit('saveHotmoney', id);
+        // console.log(this.$store.state.sId);
+        _this.$router.push({
+          path: '/hotmoney_detail'
+        })
+      },
+      //点击搜索记录
+      toHistoryDetail(value) {
+        switch (this.search_table) {
+          case 0:
+            this.toDetail(value.split('/')[0], value.split('/')[1])
+            break
+          case 1:
+            this.toHmDetail(value.split('/')[1])
+            break
+          default:
+            break
+        }
+      },
       //获取搜索记录
       getHistoryStock(type) {
-        console.log(type);
         if (type == 0) {
           let historyIndexSearchStock = window.localStorage.getItem('historyIndexSearchStock')
           if (historyIndexSearchStock) {
-          	let res = historyIndexSearchStock.split('|');
+            let res = historyIndexSearchStock.split('|');
             this.historyList = []
-          	this.historyList = res
-            console.log("111");
-            console.log(this.historyList,"股票");
+            this.historyList = res
           }
-        } else if(type == 1) {
+        } else if (type == 1) {
           let historyIndexSearchHm = window.localStorage.getItem('historyIndexSearchHm')
           if (historyIndexSearchHm) {
-          	let res = historyIndexSearchHm.split('|');
+            let res = historyIndexSearchHm.split('|');
             this.historyList = []
-          	this.historyList = res
-            console.log("222");
-            console.log(this.historyList,"游资大佬");
+            this.historyList = res
           }
         }
       },
@@ -784,7 +809,6 @@
             let res = response.data.data.data.slice(0, 6);
             _this.searchList = res
             _this.searchNull = false
-            // console.log(res);
           } else {
             _this.searchNull = true
           }
@@ -831,31 +855,33 @@
         if (this.search_table == 0) {
           let keyword = (value.sname + '/' + value.scode).replace("/^\s+|\s+$/g", "")
           let {
-          	historyIndexSearchStock
+            historyIndexSearchStock
           } = localStorage;
           if (historyIndexSearchStock === undefined) {
-          	localStorage.historyIndexSearchStock = keyword;
+            localStorage.historyIndexSearchStock = keyword;
           } else {
-          	const onlyItem = historyIndexSearchStock.split('|').filter(e => e != keyword);
-          	if (onlyItem.length > 0) {
-          		historyIndexSearchStock = keyword + '|' + onlyItem.slice(0, 9).join('|');
-          	}
-          	localStorage.historyIndexSearchStock = historyIndexSearchStock;
+            const onlyItem = historyIndexSearchStock.split('|').filter(e => e != keyword);
+            if (onlyItem.length > 0) {
+              historyIndexSearchStock = keyword + '|' + onlyItem.slice(0, 9).join('|');
+            }
+            localStorage.historyIndexSearchStock = historyIndexSearchStock;
           }
+          this.toDetail(value.sname, value.scode)
         } else if (this.search_table == 1) {
           let keyword = (value.yz_name + '/' + value.id).replace("/^\s+|\s+$/g", "")
           let {
-          	historyIndexSearchHm
+            historyIndexSearchHm
           } = localStorage;
           if (historyIndexSearchHm === undefined) {
-          	localStorage.historyIndexSearchHm = keyword;
+            localStorage.historyIndexSearchHm = keyword;
           } else {
-          	const onlyItem = historyIndexSearchHm.split('|').filter(e => e != keyword);
-          	if (onlyItem.length > 0) {
-          		historyIndexSearchHm = keyword + '|' + onlyItem.slice(0, 9).join('|');
-          	}
-          	localStorage.historyIndexSearchHm = historyIndexSearchHm;
+            const onlyItem = historyIndexSearchHm.split('|').filter(e => e != keyword);
+            if (onlyItem.length > 0) {
+              historyIndexSearchHm = keyword + '|' + onlyItem.slice(0, 9).join('|');
+            }
+            localStorage.historyIndexSearchHm = historyIndexSearchHm;
           }
+          this.toHmDetail(value.id)
         }
 
       },
@@ -863,11 +889,12 @@
       onSearch() {
         if (this.searchItem !== "") {
           this.searching(this.search_table, this.searchItem)
-          console.log(this.searchList);
+          // console.log(this.searchList);
         } else {
           this.searchList = []
           this.searchNull = false
-          console.log("没有值");
+          // console.log("没有值");
+          this.getHistoryStock(this.search_table)
         }
       },
       //点击输入框X
@@ -875,6 +902,7 @@
         this.searchItem = ""
         this.searchList = []
         this.searchNull = false
+        this.getHistoryStock(this.search_table)
       },
       handleFun() {
         let _this = this;

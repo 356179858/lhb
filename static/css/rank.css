@@ -1432,7 +1432,7 @@
 	justify-content: space-between;
 	align-items: center;
 	background-color: #fff;
-  position: sticky;
+  position: sticky!important;
   top: 0;
   z-index: 1;
 }
@@ -1538,7 +1538,7 @@
 
 
 .rank-column .detail-introduce {
-	padding: .38rem 0;
+	padding: .38rem 4%;
 }
 
 .card-block .scode {

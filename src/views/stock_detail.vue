@@ -168,10 +168,8 @@
           let res = response.data.data.data
           _this.count = response.data.data.count
           _this.date = res[0].rq
-          console.log(_this.count);
           _this.dataList = _this.dataList.concat(res);
-          console.log(res);
-          console.log(_this.dataList);
+          // console.log(res);
         })
       },
       getDetailDateHide(date) {
@@ -230,7 +228,6 @@
         //滚动条到底部的条件
         if (scrollTop + windowHeight == scrollHeight) {
           var length = $(".rank-list > .list-info").length;
-          console.log(length);
           var page = parseInt(length / _this.pageSize);
           if (length < _this.count) {
             _this.page = page + 1

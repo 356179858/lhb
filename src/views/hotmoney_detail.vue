@@ -85,6 +85,7 @@
           <p class="name">{{yz_name}}</p>
           <p>{{yz_summary}}</p>
         </div>
+        <div class="bottom-border"></div>
       </div>
       <div class="rank-column">
         <div class="detail-introduce">
@@ -123,7 +124,7 @@
     },
     methods: {
       getHmDetail() {
-        console.log(this.$store.state.sId);
+        // console.log(this.$store.state.sId);
         this.getdetail()
         this.getInfo()
         this.indexLoad = true
