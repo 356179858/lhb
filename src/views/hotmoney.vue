@@ -25,7 +25,8 @@
     </div>
     <!-- 卡片列表 -->
     <ul id="hotmony-indexCard" class="hotmoney-card-list">
-      <li class="hotmoney-card" :class="lhbDate.listIndex == index ? 'active' : '' " v-for="(value,index) in lhbDate.hotmoneyList" :key="value.id" @click="readMore(index)">
+      <li class="hotmoney-card" :class="lhbDate.listIndex == index ? 'active' : '' "
+        v-for="(value,index) in lhbDate.hotmoneyList" :key="value.id" @click="readMore(index)">
         <div class="card-block">
           <p class="card-title">{{value.yz_name}}</p>
           <p class="card-title-tips" v-show="lhbDate.listIndex == index">{{value.yz_summary||"暂无简介"}}</p>
@@ -37,13 +38,13 @@
               </div>
               <div class="stock-trade">
                 <p class="je">净买</p>
-                <p :class="[{add: svalue.je > 0},{min: svalue.je < 0}]"><span class="num" v-if="svalue.je > 0">+</span><span class="num">{{parseInt(svalue.je).toFixed(2)}}</span>万</p>
+                <p :class="[{add: svalue.je > 0},{min: svalue.je < 0}]"><span class="num"
+                    v-if="svalue.je > 0">+</span><span class="num">{{parseInt(svalue.je).toFixed(2)}}</span>万</p>
               </div>
             </li>
           </ul>
         </div>
-        <a class="detail-btn" @click="toDetail(value.yz_id)"
-          javascript="void(0)"><span>查看详情</span></a>
+        <a class="detail-btn" @click="toDetail(value.yz_id)" javascript="void(0)"><span>查看详情</span></a>
       </li>
     </ul>
 
@@ -117,11 +118,11 @@
           indexLoad: true,
           hotmoneyList: [],
           hotmoneyDate: {
-            sname:"",
-            scode:"",
-            id:""
+            sname: "",
+            scode: "",
+            id: ""
           },
-          listIndex:"-1"
+          listIndex: "-1"
         }
       }
     },
@@ -331,39 +332,48 @@
         })
       },
       //修改vuex
-      toDetail(id){
+      toDetail(id) {
         let _this = this
         _this.indexLoad = true
         _this.$store.commit('saveHotmoney', id);
-        _this.$router.push({path: '/hotmoney_detail'})
+        console.log(this.$store.state.sId);
+        _this.$router.push({
+          path: '/hotmoney_detail'
+        })
       },
       //跳转首页
       toIndex() {
         let _this = this
         _this.noDate = false
         _this.indexLoad = true
-        _this.$router.push({path: '/index'})
+        _this.$router.push({
+          path: '/index'
+        })
       },
       //跳转游资大佬页
       toHotmoney() {
         let _this = this
         _this.noDate = false
         _this.indexLoad = true
-        _this.$router.push({path: '/hotmoney'})
+        _this.$router.push({
+          path: '/hotmoney'
+        })
       },
       //跳转龙虎榜解读
       toUnscramble() {
         let _this = this
         _this.noDate = false
         _this.indexLoad = true
-        _this.$router.push({path: '/unscramble'})
+        _this.$router.push({
+          path: '/unscramble'
+        })
       },
       readMore(index) {
-         if(this.lhbDate.listIndex == index) {
-           this.lhbDate.listIndex = "-1"
-         } else {
-           this.lhbDate.listIndex = index
-         }
+        if (this.lhbDate.listIndex == index) {
+          this.lhbDate.listIndex = "-1"
+        } else {
+          this.lhbDate.listIndex = index
+        }
       }
     },
     created() {

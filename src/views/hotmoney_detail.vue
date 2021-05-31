@@ -103,7 +103,7 @@
     data() {
       return {
         page: "1",
-        pageSize: "5",
+        pageSize: "4",
         detailList: [],
         detailInfo: [],
         tableIndex: "0",
@@ -123,8 +123,10 @@
     },
     methods: {
       getHmDetail() {
+        console.log(this.$store.state.sId);
         this.getdetail()
         this.getInfo()
+        this.indexLoad = true
       },
       getdetail() {
         let _this = this
@@ -167,6 +169,7 @@
           }
         }).then(response => {
           let res = response.data.data
+          console.log(res);
           _this.detailInfo = res
           _this.yz_name = res.yz_info.yz_name
           _this.yz_summary = res.yz_info.yz_summary
@@ -220,13 +223,21 @@
             _this.page = page + 1
             _this.getdetail()
           } else if (length == _this.count) {
-            _this.indexLoad = false
+            setTimeout(function(){
+                _this.indexLoad = false
+            }, 300);
           }
         }
       }
     },
     created() {
       this.getHmDetail()
+      if (sessionStorage.getItem("store")) {
+        this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem("store"))))
+        window.addEventListener("beforeunload", () => {
+          sessionStorage.setItem("store", JSON.stringify(this.$store.state))
+        })
+      }
     },
     mounted() {
       window.addEventListener("scroll",this.handleFun)

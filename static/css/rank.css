@@ -35,7 +35,6 @@
 }
 
 .rank-head .rank-search .icon-close {
-	display: none;
 	float: right;
 	width: .6rem;
 	height: .6rem;
@@ -1571,7 +1570,6 @@
 	z-index: 900;
 	font-size: .28rem;
 	font-weight: normal;
-	display: none;
 }
 
 .search-mask .search-block {
@@ -1658,7 +1656,30 @@
 	box-sizing: border-box;
 	margin: 0 1% .32rem 1%;
 }
-
+.bt-line {
+    position: relative;
+}
+.bt-line::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    border-bottom: 1px solid #e8e8e8;
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: scaleY(0.5);
+    -ms-transform: scaleY(0.5);
+    -o-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 .rank-column .hot-list>li a {
 	display: block;
 	padding: 0 .2rem;
@@ -1693,7 +1714,6 @@
 }
 
 .search-mask .mask-serach-list {
-	display: none;
 	padding: 0 4%;
 }
 

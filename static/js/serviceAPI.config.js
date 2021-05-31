@@ -8,6 +8,7 @@ const URL = {
     hotmoney_detail_page : BASEURL + 'stock/get_hot_money_detail_page',
     stock_detail_date : BASEURL + 'stock/get_lhb_detail_page',
     stock_detail_hide  : BASEURL + 'stock/lhb_stock_detail',
+    search  : BASEURL + 'stock/lhb_search',
 }
 
 module.exports = URL
