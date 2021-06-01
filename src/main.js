@@ -20,13 +20,13 @@ Vue.component(Input.name, Input);
 
 Vue.use(datePicker)
 
-import url from '../static/js/serviceAPI.config.js'
+import url from '../static/js/serviceAPI.config'
 Vue.prototype.url=url;
 
-import Utils from '../static/js/common.js';
+import Utils from '../static/js/common';
 Vue.prototype.utils=Utils;
 
-import fixTab from '../static/js/fixedTable.js';
+import fixTab from '../static/js/fixedTable';
 Vue.prototype.ft=fixTab;
 
 
